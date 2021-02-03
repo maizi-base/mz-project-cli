@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const clear = require('clear')
 const chalk = require('chalk');
 const config = require('../config.json')
-const { cloneProject, getBlpTypes, start } = require('./main')
+const { getBlpTypes, start } = require('./main')
 
 class Command {
 
@@ -55,12 +55,6 @@ class Command {
 exports.Command = Command
 
 
-
-
-
 // function downloadTarball(pkgName) {
 //   getPackageInfo(pkgName)
 // }
-
-
-

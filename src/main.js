@@ -49,7 +49,7 @@ function copyAndReplacePackage(projName, desc, blpType) {
   const blpName = config.boilerplate[blpType].blpName
   // const pkgInfo = require('../egg-boilerplate-admin/boilerplate/_package.json')
   const tmpBlpDir = path.join(tmpDir, `${projName}/boilerplate`)
-  const pkgFile = fs.readFileSync(tmpBlpDir + '_package.json', 'utf8')
+  const pkgFile = fs.readFileSync(path.join(tmpBlpDir, '_package.json'), 'utf8')
   const pkgFileAfter = replaceTmp(pkgFile, projName, desc)
   fs.writeFile(path.join(tmpBlpDir, 'package.json'), pkgFileAfter, 'utf8', err => {
     if (err) throw err
@@ -149,5 +149,3 @@ exports.cloneProject = cloneProject
 exports.copyAndReplacePackage = copyAndReplacePackage
 exports.getBlpTypes = getBlpTypes
 exports.start = start
-
-
