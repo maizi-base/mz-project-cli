@@ -31,16 +31,18 @@ class Command {
           name: 'description',
           message: "Please input you project description:",
         },
+        {
+          type: 'input',
+          name: 'author',
+          message: "Please input the author:",
+        },
       ])
       .then((answers) => {
-        const projName = answers.projName
-        const description = answers.description
-        const blpName = config.boilerplate[answers.type].blpName
         // TODO add simple
         if (answers.type === 'simple') {
           return console.log(chalk.red('A joke😄'));
         }
-        start(projName, description, answers.type)
+        start(answers)
       });
   }
 
