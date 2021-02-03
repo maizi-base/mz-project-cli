@@ -56,9 +56,12 @@ function copyAndReplacePackage(projName, desc, blpType) {
   })
 }
 
+/**
+ * 
+ */
 function copyProject() {
   // 模板文件需要有boilerplate文件夹
-  const tmpFileDir = path.join(tmpDir, projName, 'boilerplate')
+  const tmpFileDir = path.join(tmpDir, projectName, 'boilerplate')
   copy(tmpFileDir + '/**/*', finalDir, (err, file) => {
     if (err) throw err
     log('file copyed!')
