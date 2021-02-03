@@ -1,0 +1,12 @@
+{
+  "boilerplate": {
+    "simple": {
+      "gitRepo": "",
+      "blpName": "egg-boilerplate-simple"
+    },
+    "admin": {
+      "gitRepo": "git@github.com:maizi-base/egg-boilerplate-admin.git",
+      "blpName": "egg-boilerplate-admin"
+    }
+  }
+}
