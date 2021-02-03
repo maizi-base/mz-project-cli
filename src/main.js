@@ -4,7 +4,7 @@ const path = require('path')
 const chalk = require('chalk')
 const os = require('os')
 const copy = require('copy')
-const { gitClone, log } = require('../lib/utils')
+const { gitClone, log, deleteFile } = require('../lib/utils')
 
 // 自有项目名称
 let projectName = ''
@@ -13,13 +13,17 @@ const tmpDir = getTmpDir()
 // 最终项目保存地址
 let finalDir = ''
 
-async function start(projName, desc, blpType) {
+async function start(opts) {
+  const { projName, type: blpType } = opts
   _setProjectName(projName)
   _setFinalDir(projName)
+  const _pkgFilePath = path.join(finalDir, '_package.json')
   const tmpFileDir = path.join(tmpDir, projName)
   await cloneProject(blpType, tmpFileDir)
-  copyAndReplacePackage(projName, desc, blpType)
-  copyProject()
+  copyAndReplacePackage(opts)
+  copyProject(() => {
+    deleteFile(_pkgFilePath)
+  })
   setTimeout(showSuccess, 500)
 }
 
@@ -41,30 +45,33 @@ async function cloneProject(blpType, target) {
 
 /**
  * 替换_package.json 里的变量
- * @param {*} projName 自建项目名
- * @param {*} blpType 模板文件名
+ * @param {String} opts.projName 自建项目名
+ * @param {String} opts.type 模板文件类型
  */
-function copyAndReplacePackage(projName, desc, blpType) {
+function copyAndReplacePackage(opts) {
+  const { projName, type } = opts
   console.log('copy project...');
-  const blpName = config.boilerplate[blpType].blpName
+  const blpName = config.boilerplate[type].blpName
   // const pkgInfo = require('../egg-boilerplate-admin/boilerplate/_package.json')
   const tmpBlpDir = path.join(tmpDir, `${projName}/boilerplate`)
   const pkgFile = fs.readFileSync(path.join(tmpBlpDir, '_package.json'), 'utf8')
-  const pkgFileAfter = replaceTmp(pkgFile, projName, desc)
-  fs.writeFile(path.join(tmpBlpDir, 'package.json'), pkgFileAfter, 'utf8', err => {
-    if (err) throw err
-  })
+  const pkgFileAfter = replaceTmp(pkgFile, opts)
+  fs.writeFileSync(path.join(tmpBlpDir, 'package.json'), pkgFileAfter, 'utf8')
 }
 
 /**
- * 
+ * 拷贝项目
+ * @param {Function} cb 成功回调
  */
-function copyProject() {
+function copyProject(cb) {
   // 模板文件需要有boilerplate文件夹
   const tmpFileDir = path.join(tmpDir, projectName, 'boilerplate')
   copy(tmpFileDir + '/**/*', finalDir, (err, file) => {
     if (err) throw err
-    log('file copyed!')
+    else {
+      log('file copyed!')
+      if (typeof cb === 'function') cb()
+    }
   })
 }
 
@@ -130,14 +137,17 @@ function _replaceTmpDesc(str, desc) {
 
 /**
  * 替换_package.json中的模板变量
- * @param {*} str 
- * @param {*} projName 
- * @param {*} desc 
+ * @param {String} str 待替换字符、文件
+ * @param {String} opts.projName 
+ * @param {String} opts.desc 
+ * @param {String} opts.author 
  */
-function replaceTmp(str, projName, desc) {
+function replaceTmp(str, opts) {
+  const { projName, desc, author } = opts
   return str
     .replace(/\{\{name\}\}/g, projName)
     .replace(/\{\{description\}\}/g, desc)
+    .replace(/\{\{author\}\}/g, author)
 }
 
 /**
