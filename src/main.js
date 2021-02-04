@@ -1,6 +1,6 @@
 const fs = require('fs')
 const os = require('os')
-const config = require('../config.json')
+const config = require('mz-project-cli-config')
 const path = require('path')
 const chalk = require('chalk')
 const copy = require('copy')
