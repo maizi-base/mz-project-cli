@@ -1,15 +1,36 @@
 #!/usr/bin/env node
 
-const inquirer = require('inquirer');
+const inquirer = require('inquirer')
 const clear = require('clear')
-const chalk = require('chalk');
-const config = require('../config.json')
+const chalk = require('chalk')
 const { getBlpTypes, start } = require('./main')
+const { program } = require('commander')
 
 class Command {
 
-  step() {
-    // 询问式交互
+  init() {
+    program.version('0.1.1');
+    program.option('-h, --help', 'output usage information')
+    program
+      .command('create <project-name>')
+      .description('create a new project powered by mz-project-cli')
+      .action((name) => {
+        clear();
+        this.ask(name)
+      });
+
+    program.parse(process.argv);
+
+    if (!program.args.length) {
+      program.help();
+    }
+  }
+
+  /**
+   * 询问式交互
+   * @param {String} projName? 项目名称
+   */
+  ask(projName) {
     inquirer
       .prompt([
         {
@@ -25,6 +46,7 @@ class Command {
           type: 'input',
           name: 'projName',
           message: "Please input your project name:",
+          default: projName
         },
         {
           type: 'input',
@@ -38,19 +60,13 @@ class Command {
         },
       ])
       .then((answers) => {
-        // TODO add simple
-        if (answers.type === 'simple') {
-          return console.log(chalk.red('A joke😄'));
-        }
         start(answers)
-      });
+      })
   }
 
   run() {
-    // 清空控制台
-    clear()
-    // 交互程序
-    this.step()
+    // init
+    this.init()
   }
 }
 
