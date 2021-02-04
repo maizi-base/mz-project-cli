@@ -1,8 +1,8 @@
 const fs = require('fs')
+const os = require('os')
 const config = require('../config.json')
 const path = require('path')
 const chalk = require('chalk')
-const os = require('os')
 const copy = require('copy')
 const { gitClone, log, deleteFile } = require('../lib/utils')
 
@@ -151,7 +151,7 @@ function replaceTmp(str, opts) {
 }
 
 /**
- * 文件缓存地址
+ * 获取系统文件缓存地址
  */
 function getTmpDir() {
   return path.join(os.tmpdir(), 'mz-project-cli');

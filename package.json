@@ -1,6 +1,6 @@
 {
   "name": "mz-project-cli",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "项目骨架生成器",
   "main": "command.js",
   "bin": {

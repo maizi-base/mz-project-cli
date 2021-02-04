@@ -1,12 +1,16 @@
 {
   "boilerplate": {
-    "simple": {
-      "gitRepo": "",
+    "egg-simple": {
+      "gitRepo": "https://github.com/maizi-base/egg-boilerplate-simple.git",
       "blpName": "egg-boilerplate-simple"
     },
-    "admin": {
-      "gitRepo": "git@github.com:maizi-base/egg-boilerplate-admin.git",
+    "egg-admin": {
+      "gitRepo": "https://github.com/maizi-base/egg-boilerplate-admin.git",
       "blpName": "egg-boilerplate-admin"
+    },
+    "vue-admin": {
+      "gitRepo": "https://github.com/maizi-base/vue-boilerplate-admin.git",
+      "blpName": "vue-boilerplate-admin"
     }
   }
 }
